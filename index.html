@@ -14,44 +14,114 @@
     </div>
     <div class = "buttons">
         <button id="erase">Eraser</button>
+        <button id="clear">Clear</button>
+        <button id="rainbow">Rainbow</button>
 
+    </div>
+    <div class="slideContainer">
+        <input type="range" min="1" max="64" value="32" id ="myRange" class="slider">
+        <div class="values"><span>1</span> <span>64</span></div>
+        <p>Box Dimension: <span id="value"></span></p>
     </div>
 </body>
 
 <script>
-    let noSquares = 5;
-    let widthHeight = 500/noSquares;
-    const body = document.querySelector('.body');
-    for(let i = 0; i<noSquares;i++){
-        const row = document.createElement('div');
-        row.classList.add('row');
-        body.appendChild(row);
-    
+    let noSquares = 32;
+    let widthHeight = 700/noSquares;
+    makeBoxes();
+
+  
+    const eraser = document.querySelector('#erase');
+    const clear = document.querySelector('#clear');
+    const rainbow = document.querySelector('#rainbow');
+    const slider = document.querySelector('#myRange');
+    const output = document.querySelector('#value')
+
+    output.innerHTML = slider.value;
+    slider.oninput = ()=>{
+        output.innerHTML = slider.value;
+        // noSquares = slider.value;
+        // widthHeight = 700/noSquares;
+        // makeBoxes();
     }
-    const rows = Array.from(document.querySelectorAll('.row'));
+    
+
+    let erase = false;
+    let randomColor = false;
+    
+    eraser.addEventListener('click', ()=>{
+        if (erase == true){
+            erase = false;
+        }
+        else{
+            erase = true;
+        }
+    })
+
+    rainbow.addEventListener('click', ()=>{
+        if (randomColor == true){
+            randomColor = false;
+        }
+        else{
+            randomColor = true;
+        }
+    })
+
+    function makeBoxes(){
+        const body = document.querySelector('.body');
+        for(let i = 0; i<noSquares;i++){
+            const row = document.createElement('div');
+            row.classList.add('row');
+            body.appendChild(row);
+        
+        }
+        const rows = Array.from(document.querySelectorAll('.row'));
 
         
-    rows.forEach((choice) =>{
+        rows.forEach((choice) =>{
 
-        for(let y = 0; y<noSquares; y++){
-            const box = document.createElement('div');
-            box.classList.add('box');
-            box.style.width =widthHeight.toString()+"px"
-            box.style.height =widthHeight.toString()+"px"
-            choice.appendChild(box);
-        }
+            for(let y = 0; y<noSquares; y++){
+                const box = document.createElement('div');
+                box.classList.add('box');
+                box.style.width =widthHeight.toString()+"px";
+                box.style.height =widthHeight.toString()+"px";
+                choice.appendChild(box);
+            }
 
+        });
+
+        const boxes = document.querySelectorAll('.box');
+        console.log(boxes);
+        boxes.forEach((choices)=>{
+            choices.addEventListener('mousedown',color);
+
+        });
+
+    }
+
+
+
+    clear.addEventListener('click', ()=>{
+        boxes.forEach((choices)=>{
+            choices.style.backgroundColor = "white";
+        });
     });
-
-    const boxes = document.querySelectorAll('.box');
-    console.log(boxes);
-    boxes.forEach((choices)=>{
-        choices.addEventListener('mouseover',color);
-
-    });
-
     function color(e){
-        e.target.classList.add('colored');
+        if (erase == true){
+            e.target.style.backgroundColor = "white";
+        }
+        else if(randomColor == true){
+            randomOne =  Math.floor(Math.random() * 255) + 1;
+            randomTwo =  Math.floor(Math.random() * 255) + 1;
+            randomThree =  Math.floor(Math.random() * 255) + 1;
+            rgbValue = "rgb("+randomOne+", "+randomTwo+", "+randomThree+")" ;
+            e.target.style.backgroundColor = rgbValue;
+            
+        }
+        else{
+            e.target.style.backgroundColor = "black";
+        }
+        
     }
 
 
