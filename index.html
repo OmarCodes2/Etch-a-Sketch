@@ -30,7 +30,7 @@
     let widthHeight = 700/noSquares;
     makeBoxes();
 
-  
+    
     const eraser = document.querySelector('#erase');
     const clear = document.querySelector('#clear');
     const rainbow = document.querySelector('#rainbow');
@@ -40,9 +40,15 @@
     output.innerHTML = slider.value;
     slider.oninput = ()=>{
         output.innerHTML = slider.value;
-        // noSquares = slider.value;
-        // widthHeight = 700/noSquares;
-        // makeBoxes();
+        noSquares = slider.value;
+        widthHeight = 700/noSquares;
+
+        const rows = document.querySelectorAll('.row');
+        rows.forEach((choices)=>{
+            choices.remove();
+
+        });
+        makeBoxes();
     }
     
 
@@ -102,6 +108,7 @@
 
 
     clear.addEventListener('click', ()=>{
+        const boxes = document.querySelectorAll('.box');
         boxes.forEach((choices)=>{
             choices.style.backgroundColor = "white";
         });
