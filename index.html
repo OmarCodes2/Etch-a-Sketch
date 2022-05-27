@@ -13,10 +13,10 @@
 
     </div>
     <div class = "buttons">
+        <button id="draw">Draw</button>
+        <button id="rainbow">Rainbow</button>
         <button id="erase">Eraser</button>
         <button id="clear">Clear</button>
-        <button id="rainbow">Rainbow</button>
-
     </div>
     <div class="slideContainer">
         <input type="range" min="1" max="64" value="32" id ="myRange" class="slider">
@@ -27,21 +27,23 @@
 
 <script>
     let noSquares = 32;
-    let widthHeight = 700/noSquares;
+    let widthHeight = 500/noSquares;
     makeBoxes();
 
-    
+    const draw = document.querySelector('#draw');
     const eraser = document.querySelector('#erase');
     const clear = document.querySelector('#clear');
     const rainbow = document.querySelector('#rainbow');
     const slider = document.querySelector('#myRange');
     const output = document.querySelector('#value')
 
+    draw.classList.add('selected');
+    
     output.innerHTML = slider.value;
     slider.oninput = ()=>{
         output.innerHTML = slider.value;
         noSquares = slider.value;
-        widthHeight = 700/noSquares;
+        widthHeight = 500/noSquares;
 
         const rows = document.querySelectorAll('.row');
         rows.forEach((choices)=>{
@@ -51,25 +53,50 @@
         makeBoxes();
     }
     
-
+    let drawed = true;
     let erase = false;
     let randomColor = false;
     
     eraser.addEventListener('click', ()=>{
         if (erase == true){
             erase = false;
+            eraser.classList.remove('selected');
+            drawed = true;
+            draw.classList.add('selected');
         }
         else{
             erase = true;
+            eraser.classList.add('selected');
+            drawed = false;
+            draw.classList.remove('selected');
+            rainbow.classList.remove('selected');
+            randomColor = false;
+
         }
+    })
+
+    draw.addEventListener('click', ()=>{
+
+        drawed = true;
+        draw.classList.add('selected');
+        erase = false;
+        eraser.classList.remove('selected');
+        
     })
 
     rainbow.addEventListener('click', ()=>{
         if (randomColor == true){
             randomColor = false;
+            rainbow.classList.remove('selected');
         }
         else{
             randomColor = true;
+            drawed = true;
+            erase = false;
+            draw.classList.add('selected');
+            rainbow.classList.add('selected');
+            eraser.classList.remove('selected');
+
         }
     })
 
